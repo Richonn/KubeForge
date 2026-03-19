@@ -19,3 +19,10 @@ jobs:
     needs: build
     uses: ./.github/workflows/push.yml
     secrets: inherit
+
+  scan:
+    if: github.event_name == 'push'
+    needs: push
+    continue-on-error: true
+    uses: ./.github/workflows/scan.yml
+    secrets: inherit

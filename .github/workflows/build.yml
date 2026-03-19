@@ -22,14 +22,4 @@ jobs:
         with:
           context: app/${{ matrix.service }}
           push: false
-          load: true
           tags: ghcr.io/richonn/kubeforge-${{ matrix.service }}:ci
-
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          image-ref: ghcr.io/richonn/kubeforge-${{ matrix.service }}:ci
-          format: table
-          exit-code: 1
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true

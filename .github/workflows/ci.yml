@@ -1,0 +1,17 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  push:
+    if: github.event_name == 'push'
+    needs: build
+    uses: ./.github/workflows/push.yml
+    secrets: inherit

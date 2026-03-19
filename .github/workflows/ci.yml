@@ -23,6 +23,5 @@ jobs:
   scan:
     if: github.event_name == 'push'
     needs: push
-    continue-on-error: true
     uses: ./.github/workflows/scan.yml
     secrets: inherit

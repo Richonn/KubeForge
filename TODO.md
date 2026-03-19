@@ -8,14 +8,14 @@ Stack : minikube · NGINX Ingress · cert-manager · Sealed Secrets · ArgoCD ·
 ## Phase 1 — Fondations
 
 ### Environnement
-- [ ] Installer `minikube` et `kubectl`
-- [ ] Démarrer un cluster minikube (`minikube start --driver=docker`)
-- [ ] Vérifier que `kubectl get nodes` retourne le nœud prêt
+- [x] Installer `minikube` et `kubectl`
+- [x] Démarrer un cluster minikube (`minikube start --driver=docker`)
+- [x] Vérifier que `kubectl get nodes` retourne le nœud prêt
 
 ### Services applicatifs
-- [ ] Créer 3 services minimalistes : `api` (ex. FastAPI/Express), `frontend` (ex. Nginx static), `worker` (ex. script Python/Node)
-- [ ] Écrire un `Dockerfile` pour chacun
-- [ ] Builder et pousser les images sur GitHub Container Registry (`ghcr.io`)
+- [x] Créer 3 services minimalistes : `api` (ex. FastAPI/Express), `frontend` (ex. Nginx static), `worker` (ex. script Python/Node)
+- [x] Écrire un `Dockerfile` pour chacun
+- [x] Builder et pousser les images sur GitHub Container Registry (`ghcr.io`)
 
 ### Manifests Kubernetes de base
 - [ ] Écrire un `Deployment` pour chaque service

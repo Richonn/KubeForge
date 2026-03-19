@@ -9,6 +9,6 @@ FROM node:22-alpine
 RUN apk upgrade --no-cache
 WORKDIR /app
 COPY package.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 COPY --from=builder /app/dist dist/
 CMD ["node", "dist/index.js"]

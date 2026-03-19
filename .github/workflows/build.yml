@@ -1,1 +1,25 @@
-# Unused — logic merged into ci.yml
+name: Build
+
+on:
+  workflow_call:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [api, frontend, worker]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: app/${{ matrix.service }}
+          push: false
+          tags: ghcr.io/richonn/kubeforge-${{ matrix.service }}:ci

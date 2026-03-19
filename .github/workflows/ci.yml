@@ -14,8 +14,14 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
 
-  push:
+  scan:
     if: github.event_name == 'push'
     needs: build
+    uses: ./.github/workflows/scan.yml
+    secrets: inherit
+
+  push:
+    if: github.event_name == 'push'
+    needs: scan
     uses: ./.github/workflows/push.yml
     secrets: inherit

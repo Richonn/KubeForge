@@ -25,10 +25,9 @@ jobs:
           password: ${{ secrets.CR_PAT }}
 
       - name: Scan image with Trivy
-        continue-on-error: true
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: ghcr.io/richonn/kubeforge-${{ matrix.service }}:latest
+          image-ref: ghcr.io/richonn/kubeforge-${{ matrix.service }}:ci
           format: table
           exit-code: 1
           severity: CRITICAL,HIGH

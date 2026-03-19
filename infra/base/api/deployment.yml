@@ -13,6 +13,7 @@ spec:
       labels:
         app: api
     spec:
+      serviceAccountName: sa-api
       imagePullSecrets:
         - name: ghcr-secret
       containers:

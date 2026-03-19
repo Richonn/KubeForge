@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubeforge-tls
+  namespace: default
+spec:
+  secretName: kubeforge-tls-secret
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - k8s-forge.local

@@ -26,3 +26,10 @@ jobs:
     needs: scan
     uses: ./.github/workflows/push.yml
     secrets: inherit
+
+  bump:
+    if: github.event_name == 'push'
+    needs: push
+    uses: ./.github/workflows/bump.yml
+    permissions:
+      contents: write

@@ -18,12 +18,12 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update image tags in infra/
+      - name: Update image tags in values.yaml
         run: |
           SHA="sha-$(echo ${{ github.sha }} | cut -c1-7)"
           for service in api frontend worker; do
-            sed -i "s|ghcr.io/richonn/kubeforge-${service}:.*|ghcr.io/richonn/kubeforge-${service}:${SHA}|" \
-              infra/base/${service}/deployment.yml
+            sed -i "/^${service}:/,/^[a-z]/ s|tag:.*|tag: ${SHA}|" \
+              infra/charts/kubeforge/values.yaml
           done
 
       - name: Commit and push
@@ -31,6 +31,6 @@ jobs:
           SHA="sha-$(echo ${{ github.sha }} | cut -c1-7)"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add infra/base/api/deployment.yml infra/base/frontend/deployment.yml infra/base/worker/deployment.yml
+          git add infra/charts/kubeforge/values.yaml
           git diff --cached --quiet || git commit -m "chore: bump image tags to ${SHA}"
           git push

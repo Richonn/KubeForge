@@ -1,0 +1,38 @@
+api:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/richonn/kubeforge-api
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/richonn/kubeforge-frontend
+    tag: latest
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+worker:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/richonn/kubeforge-worker
+    tag: latest
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi

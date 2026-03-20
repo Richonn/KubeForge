@@ -18,7 +18,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: api
-          image: ghcr.io/richonn/kubeforge-api:sha-44b5391
+          image: ghcr.io/richonn/kubeforge-api:sha-4fbbca0
           ports:
             - containerPort: 3000
           envFrom:

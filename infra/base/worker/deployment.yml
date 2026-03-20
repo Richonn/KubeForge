@@ -18,7 +18,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: worker
-          image: ghcr.io/richonn/kubeforge-worker:sha-44b5391
+          image: ghcr.io/richonn/kubeforge-worker:sha-4fbbca0
           envFrom:
             - configMapRef:
                 name: kubeforge-config

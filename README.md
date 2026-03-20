@@ -1,4 +1,4 @@
-![Build](https://github.com/TON_USER/kubeforge/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/Richonn/kubeforge/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Kubernetes](https://img.shields.io/badge/kubernetes-v1.32-326CE5?logo=kubernetes&logoColor=white)
 

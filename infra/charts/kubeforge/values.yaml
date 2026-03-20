@@ -2,7 +2,7 @@ api:
   replicaCount: 1
   image:
     repository: ghcr.io/richonn/kubeforge-api
-    tag: latest
+    tag: sha-020cca8
   resources:
     requests:
       cpu: 100m
@@ -15,7 +15,7 @@ frontend:
   replicaCount: 1
   image:
     repository: ghcr.io/richonn/kubeforge-frontend
-    tag: latest
+    tag: sha-020cca8
   resources:
     requests:
       cpu: 50m
@@ -28,7 +28,7 @@ worker:
   replicaCount: 1
   image:
     repository: ghcr.io/richonn/kubeforge-worker
-    tag: latest
+    tag: sha-020cca8
   resources:
     requests:
       cpu: 100m

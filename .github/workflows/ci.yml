@@ -3,6 +3,8 @@ name: CI/CD
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'infra/**'
   pull_request:
     branches: [main]
 

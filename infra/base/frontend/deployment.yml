@@ -18,7 +18,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: frontend
-          image: ghcr.io/richonn/kubeforge-frontend:latest
+          image: ghcr.io/richonn/kubeforge-frontend:sha-bf14a61
           ports:
             - containerPort: 80
           envFrom:

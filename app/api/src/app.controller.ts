@@ -6,4 +6,9 @@ export class AppController {
   health() {
     return { status: 'ok' };
   }
+
+  @Get('version')
+  version() {
+    return { version: '1.1.0' };
+  }
 }

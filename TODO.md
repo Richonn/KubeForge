@@ -89,13 +89,13 @@ Stack : minikube · NGINX Ingress · cert-manager · Sealed Secrets · ArgoCD ·
 - [x] Créer un workflow `ci.yml` : build + push image Docker sur `ghcr.io`
 - [x] Intégrer le scan Trivy comme job bloquant (entre build et push)
 - [x] Pipeline en 3 workflows réutilisables : `build.yml` → `scan.yml` → `push.yml`
-- [ ] Ajouter un job qui met à jour le tag d'image dans `infra/` (commit automatique)
+- [x] Ajouter un job qui met à jour le tag d'image dans `infra/` (commit automatique)
 
 ### ArgoCD — CD
-- [ ] Installer ArgoCD sur le cluster (`kubectl apply -n argocd -f ...`)
-- [ ] Accéder à l'UI ArgoCD via port-forward
-- [ ] Créer une `Application` ArgoCD pointant sur le dossier `infra/` du repo
-- [ ] Configurer le sync automatique (auto-sync + self-heal)
+- [x] Installer ArgoCD sur le cluster (`kubectl apply -n argocd -f ...`)
+- [x] Accéder à l'UI ArgoCD via port-forward
+- [x] Créer une `Application` ArgoCD pointant sur le dossier `infra/` du repo
+- [x] Configurer le sync automatique (auto-sync + self-heal)
 - [ ] Vérifier qu'un `git push` sur `app/` déclenche un déploiement complet sans intervention manuelle
 
 ### Tests end-to-end du pipeline

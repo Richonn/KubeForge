@@ -8,9 +8,10 @@ spec:
   source:
     repoURL: https://github.com/Richonn/KubeForge
     targetRevision: main
-    path: infra/base
-    directory:
-      recurse: true
+    path: infra/charts/kubeforge
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default

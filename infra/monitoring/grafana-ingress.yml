@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Prefix /monitoring;
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - k8s-forge.local
+      secretName: grafana-tls-secret
+  rules:
+    - host: k8s-forge.local
+      http:
+        paths:
+          - path: /monitoring(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: kube-prometheus-stack-grafana
+                port:
+                  number: 80

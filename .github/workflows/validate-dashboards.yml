@@ -1,0 +1,45 @@
+name: Validate Grafana Dashboards
+
+on:
+  pull_request:
+    paths:
+      - 'infra/charts/monitoring/dashboards/**'
+  push:
+    branches: [main]
+    paths:
+      - 'infra/charts/monitoring/dashboards/**'
+
+jobs:
+  validate-dashboards:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JSON syntax
+        run: |
+          find infra/charts/monitoring/dashboards -name '*.json' | while read f; do
+            echo "Validating $f..."
+            python3 -m json.tool "$f" > /dev/null || { echo "INVALID JSON: $f"; exit 1; }
+          done
+          echo "All dashboard JSON files are valid."
+
+      - name: Check required dashboard fields
+        run: |
+          for f in infra/charts/monitoring/dashboards/*.json; do
+            [ -f "$f" ] || continue
+            python3 -c "
+          import json, sys
+          with open('$f') as fh:
+              d = json.load(fh)
+          assert 'title' in d, 'Missing title field'
+          assert 'panels' in d, 'Missing panels field'
+          assert len(d['panels']) > 0, 'Dashboard has no panels'
+          print(f'OK: {d[\"title\"]} ({len(d[\"panels\"])} panels)')
+          "
+          done
+
+      - name: Check kubeforge-overview dashboard exists
+        run: |
+          test -f infra/charts/monitoring/dashboards/kubeforge-overview.json || \
+            { echo "ERROR: kubeforge-overview.json is missing"; exit 1; }

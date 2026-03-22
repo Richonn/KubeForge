@@ -1,0 +1,112 @@
+prometheus:
+    prometheusSpec:
+      serviceMonitorNamespaceSelector:
+        matchLabels:
+          monitoring: "true"
+      serviceMonitorSelector: {}
+      retention: 7d
+      storageSpec:
+        emptyDir: {}
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+
+grafana:
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: admin-user
+    passwordKey: admin-password
+  grafana.ini:
+    server:
+      root_url: "https://k8s-forge.local/monitoring"
+      serve_from_sub_path: true
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: monitoring
+  dashboards:
+    default:
+      kubernetes-cluster:
+        gnetId: 7249
+        revision: 1
+        datasource: Prometheus
+      kubernetes-pods:
+        gnetId: 6781
+        revision: 1
+        datasource: Prometheus
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'namespace']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'null'
+    receivers:
+      - name: 'null'
+
+additionalPrometheusRulesMap:
+  kubeforge-alerts:
+    groups:
+      - name: kubeforge.pods
+        rules:
+          - alert: PodCrashLooping
+            expr: increase(kube_pod_container_status_restarts_total{namespace="default"}[15m]) > 3
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod {{ $labels.pod }} is crash-looping"
+          - alert: HighCPUUsage
+            expr: |
+              sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default",container!=""}[5m]))
+              /
+              sum by (pod) (kube_pod_container_resource_limits{namespace="default",resource="cpu"})
+              > 0.80
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU on pod {{ $labels.pod }}"
+          - alert: NodeNotReady
+            expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.node }} is NotReady"
+
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+nodeExporter:
+  enabled: true
+kube-state-metrics:
+  enabled: true

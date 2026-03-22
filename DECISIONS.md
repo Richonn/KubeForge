@@ -184,3 +184,31 @@ Create ArgoCD `Application` resources for cert-manager and Sealed Secrets in `in
 - **Self-healing**: ArgoCD reinstalls dependencies if they drift or disappear
 - **GitOps consistency**: all cluster state is declared in Git
 - **Reduced manual steps**: after a cluster restart, only ArgoCD itself needs to be reinstalled; it handles everything else
+
+---
+
+## ADR-008 — kube-prometheus-stack vs separate Prometheus + Grafana
+
+**Date:** 2026-03-22
+**Status:** Accepted
+
+### Context
+
+Phase 6 requires Prometheus, Grafana, and Alertmanager. These can be deployed as three separate Helm charts, or as a single umbrella chart.
+
+### Decision
+
+Use **kube-prometheus-stack** (prometheus-community Helm chart).
+
+### Rationale
+
+| Option | CRDs included | Pre-wired | Maintenance |
+|--------|--------------|-----------|-------------|
+| Separate charts | No | Manual datasource + scraping config | 3 chart versions to track |
+| kube-prometheus-stack | Yes | Grafana → Prometheus pre-configured | 1 chart version |
+
+kube-prometheus-stack bundles Prometheus Operator, Prometheus, Alertmanager, Grafana, kube-state-metrics, and node-exporter in a single `helm install` with one `values.yaml`. The pre-wired Grafana → Prometheus datasource and default Kubernetes alerting rules eliminate hours of manual configuration with no educational value for this phase.
+
+### Application metrics decision
+
+The NestJS `api` service does not expose a `/metrics` endpoint in this phase. Cluster-level metrics from kube-state-metrics (CPU, memory, replica counts, HPA state) and `nginx_ingress_controller_requests_total` (HTTP traffic) provide a complete observability picture without modifying application code. A ServiceMonitor stub in `infra/monitoring/servicemonitors/` serves as the hook point for future `@willsoto/nestjs-prometheus` instrumentation.

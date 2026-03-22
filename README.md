@@ -164,6 +164,31 @@ Changes to `infra/` do not retrigger the CI (prevents bump loop).
 - [x] Secrets encrypted at rest with Sealed Secrets (kubeseal)
 - [x] No plain secrets committed to Git
 
+## Observability
+
+| Component | Role |
+|-----------|------|
+| Prometheus | Metrics collection (kube-state-metrics + node-exporter) |
+| Grafana | Dashboard visualization |
+| Alertmanager | Alert routing |
+| kube-prometheus-stack | Umbrella Helm chart bundling all three |
+
+Access Grafana via port-forward:
+```bash
+kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+# http://localhost:3000/monitoring/
+```
+
+Built-in dashboards:
+- Kubernetes Cluster Overview (community ID 7249)
+- Kubernetes Pods (community ID 6781)
+- KubeForge Overview (custom — CPU/mem/replicas per pod)
+
+Alerts configured:
+- `PodCrashLooping` — pod restarts > 3 in 15 minutes
+- `HighCPUUsage` — CPU > 80% of limit for 5 minutes
+- `NodeNotReady` — node not Ready for 2 minutes
+
 ## Architecture decisions
 
 See [DECISIONS.md](./DECISIONS.md).

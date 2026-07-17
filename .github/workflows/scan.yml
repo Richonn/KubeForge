@@ -2,6 +2,10 @@ name: Scan
 
 on:
   workflow_call:
+    inputs:
+      image-tag:
+        required: false
+        type: string
     secrets:
       CR_PAT:
         required: true
